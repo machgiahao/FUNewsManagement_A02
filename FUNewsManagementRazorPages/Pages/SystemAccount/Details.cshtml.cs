@@ -1,27 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using FUNewsManagement.BusinessObjects.Context;
-using FUNewsManagement.BusinessObjects.Entities;
 using FUNewsManagementSystem.Services;
-using FUNewsManagement.Services.DTOs.SystemAccount;
+using AutoMapper;
+using FUNewsManagementRazorPages.ViewModels.SystemAccount;
 
 namespace FUNewsManagementRazorPages.Pages.SystemAccount
 {
     public class DetailsModel : PageModel
     {
         private readonly IAccountService _accountService;
-
-        public DetailsModel(IAccountService _accountService)
+        private readonly IMapper _mapper;
+        public DetailsModel(IAccountService accountService, IMapper mapper)
         {
-            _accountService = _accountService;
+            _accountService = accountService;
+            _mapper = mapper;
         }
 
-        public AccountDto SystemAccount { get; set; } = default!;
+        public AccountViewModel SystemAccount { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(short? id)
         {
@@ -30,14 +25,14 @@ namespace FUNewsManagementRazorPages.Pages.SystemAccount
                 return NotFound();
             }
 
-            var systemaccount = await _accountService.GetAccountById((int)id);
+            var systemaccount = await _accountService.GetAccountByIdAsync((int)id);
             if (systemaccount == null)
             {
                 return NotFound();
             }
             else
             {
-                SystemAccount = systemaccount;
+                SystemAccount = _mapper.Map<AccountViewModel>(systemaccount);
             }
             return Page();
         }

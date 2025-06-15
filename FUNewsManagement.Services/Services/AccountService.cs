@@ -56,6 +56,13 @@ namespace FUNewsManagementSystem.Services
             return _mapper.Map<List<AccountDto>>(accounts);
         }
 
+        public async Task<(List<AccountDto> Accounts, int TotalCount)> GetAccountsPagedAsync(int page, int pageSize)
+        {
+            var (accounts, totalCount) = await _iAccountRepository.GetAccountsPagedAsync(page, pageSize);
+            var accountDtos = _mapper.Map<List<AccountDto>>(accounts);
+            return (accountDtos, totalCount);
+        }
+
         public async Task DeleteSystemAccount(int newsArticleId)
         {
             await _iAccountRepository.DeleteSystemAccountAsync(newsArticleId);
@@ -73,7 +80,7 @@ namespace FUNewsManagementSystem.Services
             await _iAccountRepository.UpdateSystemAccountAsync(account);
         }
 
-        public async Task<AccountDto?> GetAccountById(int id)
+        public async Task<AccountDto?> GetAccountByIdAsync(int id)
         {
             var account = await _iAccountRepository.GetAccountByIdAsync(id);
             return account != null ? _mapper.Map<AccountDto>(account) : null;
@@ -103,17 +110,17 @@ namespace FUNewsManagementSystem.Services
             return _mapper.Map<List<AccountDto>>(filtered.ToList());
         }
 
-        public async Task Register(string name, string email, string password)
+        public async Task Register(RegisterDto registerDto)
         {
-            var existing = await _iAccountRepository.GetAccountByEmailAsync(email);
+            var existing = await _iAccountRepository.GetAccountByEmailAsync(registerDto.AccountEmail);
             if (existing != null)
                 throw new System.Exception("Email already exist");
 
             var account = new SystemAccount
             {
-                AccountName = name,
-                AccountEmail = email,
-                AccountPassword = password,
+                AccountName = registerDto.AccountName,
+                AccountEmail = registerDto.AccountEmail,
+                AccountPassword = registerDto.AccountPassword,
                 AccountRole = 2
             };
             await _iAccountRepository.CreateSystemAccountAsync(account);
@@ -180,7 +187,6 @@ namespace FUNewsManagementSystem.Services
 
             return result;
         }
-
     }
 
 }

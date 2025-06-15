@@ -5,33 +5,120 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<link rel="stylesheet" href="~/css/account.css" />
 
-<div>
-    <h4>SystemAccount</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
+<style>
+    .details-card {
+        border-radius: 1.2rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        background: #fff;
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 0;
+        border: none;
+    }
+
+    .details-header {
+        background: linear-gradient(to right, #36d1dc, #5b86e5);
+        color: #fff;
+        border-radius: 1.2rem 1.2rem 0 0;
+        padding: 1.5rem 2rem 1rem 2rem;
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-align: center;
+        letter-spacing: 0.5px;
+    }
+
+    .details-section-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin: 1.2rem 0 0.5rem 0;
+        color: #333;
+        text-align: center;
+    }
+
+    .details-list {
+        padding: 2rem 2rem 1rem 2rem;
+    }
+
+    .details-list dt {
+        font-weight: 600;
+        color: #36d1dc;
+        width: 140px;
+    }
+
+    .details-list dd {
+        margin-bottom: 1rem;
+        color: #222;
+    }
+
+    .details-actions {
+        padding: 0 2rem 1.5rem 2rem;
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+    }
+
+    .btn-gradient {
+        background: linear-gradient(to right, #36d1dc, #5b86e5);
+        color: white;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 25px;
+        font-weight: 500;
+        transition: 0.3s;
+        text-decoration: none;
+    }
+
+    .btn-gradient:hover {
+        opacity: 0.9;
+        transform: scale(1.02);
+        color: white;
+    }
+
+    .btn-outline {
+        color: #5b86e5;
+        border: 1.5px solid #5b86e5;
+        background: transparent;
+        border-radius: 25px;
+        padding: 8px 20px;
+        font-weight: 500;
+        transition: 0.3s;
+        text-decoration: none;
+    }
+
+    .btn-outline:hover {
+        background: #5b86e5;
+        color: #fff;
+    }
+</style>
+
+<div class="details-card">
+    <div class="details-header">
+        System Account Detail
+    </div>
+    <dl class="row details-list">
+        <dt class="col-sm-4">
             @Html.DisplayNameFor(model => model.SystemAccount.AccountName)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-8">
             @Html.DisplayFor(model => model.SystemAccount.AccountName)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-4">
             @Html.DisplayNameFor(model => model.SystemAccount.AccountEmail)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-8">
             @Html.DisplayFor(model => model.SystemAccount.AccountEmail)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-4">
             @Html.DisplayNameFor(model => model.SystemAccount.AccountRole)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-8">
             @Html.DisplayFor(model => model.SystemAccount.AccountRole)
         </dd>
     </dl>
-</div>
-<div>
-    <a asp-page="./Edit" asp-route-id="@Model.SystemAccount.AccountId">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+    <div class="details-actions">
+        <a asp-page="./Edit" asp-route-id="@Model.SystemAccount.AccountId" class="btn-gradient">Edit</a>
+        <a asp-page="./Index" class="btn-outline">Back to List</a>
+    </div>
 </div>

@@ -18,6 +18,8 @@ namespace FUNewsManagementSystem.DataAccess
                 return await context.NewsArticles
                     .Include(na => na.Category)
                     .Include(na => na.Tags)
+                    .Include(n => n.CreatedBy)
+                    .OrderByDescending(n => n.CreatedDate)
                     .ToListAsync();
             }
             catch (Exception ex)
@@ -28,6 +30,7 @@ namespace FUNewsManagementSystem.DataAccess
 
         public async Task CreateNewsArticleAsync(NewsArticle newsArticle)
         {
+            Console.WriteLine($"News article: {newsArticle}");
             try
             {
                 using var context = new FunewsManagementContext();
@@ -46,7 +49,7 @@ namespace FUNewsManagementSystem.DataAccess
             }
             catch (Exception ex)
             {
-                throw new Exception("Error in SaveNewsArticleAsync: " + ex.Message);
+                throw new Exception("Error in SaveNewsArticleAsync: " + ex.ToString());
             }
         }
 
@@ -129,7 +132,7 @@ namespace FUNewsManagementSystem.DataAccess
                     .Include(n => n.Category)
                     .Include(n => n.Tags)
                     .Include(n => n.CreatedBy)
-                    .Include(n => n.UpdatedById)
+                    .Include(n => n.UpdatedBy)
                     .FirstOrDefaultAsync(n => n.NewsArticleId == newsArticleId);
             }
             catch (Exception ex)

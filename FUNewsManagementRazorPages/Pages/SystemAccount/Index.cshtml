@@ -1,49 +1,89 @@
 ﻿@page
+@using FUNewsManagementRazorPages.ViewModels.SystemAccount
+@using Microsoft.AspNetCore.Mvc.ViewFeatures
 @model FUNewsManagementRazorPages.Pages.SystemAccount.IndexModel
 
 @{
     ViewData["Title"] = "Index";
+    ViewData["CreateFormPartial"] = "SystemAccount/_CreateForm";
+    ViewData["EditFormPartial"] = "SystemAccount/_EditForm";
 }
-
-<h1>Index</h1>
-
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.systemAccount[0].AccountName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.systemAccount[0].AccountEmail)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.systemAccount[0].AccountRole)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.systemAccount)
+@functions {
+    string GetRoleName(int? role)
+    {
+        return role switch
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.AccountName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AccountEmail)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AccountRole)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.AccountId">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.AccountId">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.AccountId">Delete</a>
-            </td>
-        </tr>
+            0 => "Admin",
+            1 => "Staff",
+            2 => "Lecturer",
+            _ => "Unknown"
+        };
+    }
 }
-    </tbody>
-</table>
+<link rel="stylesheet" href="~/css/account.css" />
+
+<div class="card shadow-sm custom-table-card">
+    <div class="gradient-header">
+        <span class="header-title">List System Account</span>
+        <button type="button"
+                class="create-btn-circle"
+                data-bs-toggle="modal"
+                data-bs-target="#createModal"
+                title="Create Account">
+            <i class="bi bi-plus"></i>
+        </button>
+        @await Html.PartialAsync("_CreateModal", Model.CreateAccountViewModel)
+    </div>
+    <div class="table-responsive">
+        <table class="table mb-0 align-middle custom-table">
+            <thead class="table-light">
+                <tr>
+                    <th style="width: 30%;">AccountName</th>
+                    <th style="width: 35%;">AccountEmail</th>
+                    <th style="width: 20%;">AccountRole</th>
+                    <th style="width: 15%;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.SystemAccount)
+                {
+                    <tr>
+                        <td onclick="window.location='@Url.Page("./Details", new { id = item.AccountId })'">@item.AccountName</td>
+                        <td onclick="window.location='@Url.Page("./Details", new { id = item.AccountId })'"><a href="mailto:@item.AccountEmail">@item.AccountEmail</a></td>
+                        <td onclick="window.location='@Url.Page("./Details", new { id = item.AccountId })'">@GetRoleName(item.AccountRole)</td>
+                        <td>
+                            <a asp-page-handler="Edit" asp-route-id="@item.AccountId" class="btn btn-gradient btn-sm me-1" title="Edit" onclick="event.stopPropagation();">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <button type="button"
+                                    class="btn btn-cancel btn-sm"
+                                    title="Delete"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal-@item.AccountId"
+                                    onclick="event.stopPropagation();">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                            @await Html.PartialAsync("_DeleteModal", item.AccountId.ToString(), new ViewDataDictionary(ViewData)
+                            {
+                                { "Name", item.AccountName }
+                            })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@await Html.PartialAsync("_EditModal", Model.EditAccountViewModel)
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    @if (ViewData["ShowEditModal"] as bool? == true)
+    {
+        <script>
+            var editModal = new bootstrap.Modal(document.getElementById('editModal'));
+            editModal.show();
+        </script>
+    }
+}

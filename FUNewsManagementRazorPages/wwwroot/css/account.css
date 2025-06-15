@@ -1,0 +1,106 @@
+﻿
+.gradient-header {
+    background: linear-gradient(to right, #36d1dc, #5b86e5);
+    color: #fff;
+    border-radius: 1.2rem 1.2rem 0 0;
+    padding: 2rem 2rem 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+.header-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    flex: 1;
+    text-align: center;
+    margin-left: 2rem;
+}
+
+.create-btn-circle {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid #36d1dc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(54, 209, 220, 0.15);
+    transition: box-shadow 0.2s, border-color 0.2s;
+    position: absolute;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+}
+
+    .create-btn-circle:hover {
+        border-color: #5b86e5;
+        box-shadow: 0 4px 16px rgba(91, 134, 229, 0.18);
+    }
+
+    .create-btn-circle i {
+        color: #36d1dc;
+        font-size: 1.7rem;
+    }
+
+.gradient-header .header-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    flex: 1;
+    text-align: center;
+}
+
+.gradient-header .header-actions i {
+    font-size: 1.3rem;
+    margin-left: 1rem;
+    cursor: pointer;
+}
+
+.custom-table-card {
+    border-radius: 1.2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border: none;
+}
+
+.custom-table th {
+    vertical-align: middle;
+    font-weight: 500;
+}
+
+    .custom-table th .bi {
+        font-size: 0.9rem;
+        margin-left: 0.2rem;
+        color: #5b86e5;
+    }
+
+.custom-table td, .custom-table th {
+    background: #fff;
+}
+
+.custom-checkbox {
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
+.pagination .page-link {
+    border-radius: 50% !important;
+    margin: 0 0.15rem;
+    color: #5b86e5;
+}
+
+.pagination .active .page-link {
+    background: #5b86e5;
+    color: #fff;
+    border: none;
+}
+
+.rows-dropdown {
+    border: none;
+    border-bottom: 1px solid #ccc;
+    background: transparent;
+    width: 80px;
+    margin-right: 1rem;
+}

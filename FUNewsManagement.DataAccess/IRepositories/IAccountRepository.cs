@@ -17,5 +17,7 @@ namespace FUNewsManagementSystem.DataAccess
         Task DeleteSystemAccountAsync(int id);
         Task<List<SystemAccount>> GetAllAccountsAsync();
         Task<bool> IsEmailExistedAsync(string email, int currentAccountId);
+        Task<(List<SystemAccount> Accounts, int TotalCount)> GetAccountsPagedAsync(int page, int pageSize);
+
     }
 }

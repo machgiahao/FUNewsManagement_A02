@@ -13,11 +13,12 @@ namespace FUNewsManagementSystem.Services
         Task<AccountDto?> Login(LoginDto loginDto);
         Task DeleteSystemAccount(int newsArticleId);
         Task<List<AccountDto>> GetAllAccountsAsync();
+        Task<(List<AccountDto> Accounts, int TotalCount)> GetAccountsPagedAsync(int page, int pageSize);
         Task CreateSystemAccount(RegisterDto registerDto);
         Task UpdateSystemAccount(AccountDto accountDto);
-        Task<AccountDto?> GetAccountById(int id);
+        Task<AccountDto?> GetAccountByIdAsync(int id);
         Task<List<AccountDto>> SearchAccounts(string searchField, string searchString);
-        Task Register(string name, string email, string password);
+        Task Register(RegisterDto registerDto);
         Task<AccountDto?> GetCurrentAccount(int id);
         Task<List<string>> GetAllAccountEmails();
         Task<bool> IsEmailExisted(string email, int currentAccountId);

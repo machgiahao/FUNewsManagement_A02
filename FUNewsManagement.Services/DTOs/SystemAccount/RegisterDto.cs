@@ -12,6 +12,5 @@ namespace FUNewsManagement.Services.DTOs.SystemAccount
         public string? AccountEmail { get; set; }
         public string? AccountPassword { get; set; }
         public int? AccountRole { get; set; }
-
     }
 }

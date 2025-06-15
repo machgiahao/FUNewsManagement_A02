@@ -1,0 +1,160 @@
+﻿@page
+@model FUNewsManagementRazorPages.Pages.Auth.LoginModel
+@{
+    Layout = "_LayoutMinimal";
+}
+
+<style>
+    html, body {
+        height: 100%;
+        background: #fafbfc;
+    }
+
+    .login-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        background: #fafbfc;
+    }
+
+    .login-box {
+        width: 480px; /* was 380px */
+        background: #fff;
+        margin-top: 7vh;
+        padding: 2.5rem 2.2rem 2rem 2.2rem;
+        border-radius: 22px;
+        box-shadow: 0 8px 32px 0 rgba(54,209,220,0.10), 0 1.5px 6px 0 rgba(91,134,229,0.08);
+        transition: box-shadow 0.2s;
+    }
+
+
+    .login-title {
+        font-weight: 700;
+        font-size: 2.1rem;
+        text-align: center;
+        margin-bottom: 38px;
+        margin-top: 18px;
+        color: #333;
+        letter-spacing: 0.5px;
+    }
+
+    .input-group {
+        margin-bottom: 24px;
+    }
+
+    .input-group > div {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        background: #f7fafd;
+        border-radius: 12px;
+        border: 1.5px solid #e3eaf3;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        padding: 0 0.5rem;
+    }
+
+    .input-group > div:focus-within {
+        border-color: #36d1dc;
+        box-shadow: 0 0 0 2px #e3f7fa;
+    }
+
+    .input-group-text {
+        background: transparent;
+        border: none;
+        color: #36d1dc;
+        font-size: 1.35rem;
+        min-width: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-left: 0;
+        padding-right: 8px;
+    }
+
+    .form-control {
+        border: none;
+        background: transparent;
+        border-radius: 0 10px 10px 0 !important;
+        min-height: 48px;
+        font-size: 1.08rem;
+        box-shadow: none;
+        flex: 1 1 auto;
+        padding-left: 0;
+    }
+
+    .form-control:focus {
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .form-control::placeholder {
+        color: #b0b8c1;
+        opacity: 1;
+    }
+
+    .btn-login {
+        width: 100%;
+        background: linear-gradient(90deg, #36d1dc 0%, #5b86e5 100%);
+        color: #fff;
+        border: none;
+        border-radius: 999px;
+        font-weight: 700;
+        font-size: 1.15rem;
+        padding: 13px 0;
+        letter-spacing: 1px;
+        transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+        margin: 18px 0 0 0;
+        display: block;
+        box-shadow: 0 2px 8px 0 rgba(54,209,220,0.10);
+    }
+
+    .btn-login:hover {
+        background: linear-gradient(90deg, #5b86e5 0%, #36d1dc 100%);
+        color: #fff;
+        box-shadow: 0 4px 16px 0 rgba(54,209,220,0.18);
+        transform: translateY(-2px) scale(1.03);
+    }
+
+    .input-validation-align {
+        margin-left: 46px;
+        display: block;
+        font-size: 0.98rem;
+    }
+
+</style>
+
+<div class="login-container">
+    <div class="login-box">
+        <div class="login-title mb-1">Login</div>
+        @if (ViewData.ModelState.ContainsKey("LOGIN_FAIL") && ViewData.ModelState["LOGIN_FAIL"].Errors.Count > 0)
+        {
+            <div class="text-danger" style="text-align:center;">
+                @ViewData.ModelState["LOGIN_FAIL"].Errors[0].ErrorMessage
+            </div>
+        }
+        <form method="post" asp-controller="Auth" autocomplete="off">
+            <div class="input-group" style="flex-direction: column; align-items: flex-start;">
+                <span asp-validation-for="LoginViewModel.AccountEmail" class="text-danger mb-1 input-validation-align"></span>
+                <div style="display: flex; width: 100%;">
+                    <span class="input-group-text" style="margin-right: 8px; color: #36d1dc;">
+                        <i class="bi bi-envelope-fill"></i>
+                    </span>
+                    <input asp-for="LoginViewModel.AccountEmail" class="form-control" placeholder="Email" />
+                </div>
+            </div>
+            <div class="input-group" style="flex-direction: column; align-items: flex-start;">
+                <span asp-validation-for="LoginViewModel.AccountPassword" class="text-danger mb-1 input-validation-align"></span>
+                <div style="display: flex; width: 100%;">
+                    <span class="input-group-text" style="margin-right: 8px; color: #36d1dc;">
+                        <i class="bi bi-lock-fill"></i>
+                    </span>
+                    <input asp-for="LoginViewModel.AccountPassword" class="form-control" type="password" placeholder="Password" />
+                </div>
+            </div>
+            <button type="submit" class="btn btn-login">Login</button>
+        </form>
+
+    </div>
+</div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">

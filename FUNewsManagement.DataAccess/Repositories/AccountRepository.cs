@@ -64,6 +64,22 @@ namespace FUNewsManagementSystem.DataAccess
             }
         }
 
+        public async Task<(List<SystemAccount> Accounts, int TotalCount)> GetAccountsPagedAsync(int page, int pageSize)
+        {
+            using var context = new FunewsManagementContext();
+            var query = context.SystemAccounts.AsQueryable();
+
+            int totalCount = await query.CountAsync();
+            var accounts = await query
+                .OrderBy(a => a.AccountId)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (accounts, totalCount);
+        }
+
+
         public async Task CreateSystemAccountAsync(SystemAccount systemAccount)
         {
             try
@@ -89,7 +105,7 @@ namespace FUNewsManagementSystem.DataAccess
             try
             {
                 using var context = new FunewsManagementContext();
-                context.Entry(systemAccount).State = EntityState.Modified;
+                context.Entry<SystemAccount>(systemAccount).State = EntityState.Modified;
                 await context.SaveChangesAsync();
             }
             catch (Exception ex)

@@ -20,3 +20,157 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.modal-content {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.modal-body input.form-control,
+.modal-body select.form-select {
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    padding: 10px 14px;
+    font-size: 15px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.modal-body input.form-control:focus,
+.modal-body select.form-select:focus {
+    border-color: #5b86e5;
+    box-shadow: 0 0 0 3px rgba(91, 134, 229, 0.2);
+    outline: none;
+}
+
+.btn-gradient {
+    background: linear-gradient(to right, #36d1dc, #5b86e5);
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 25px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.btn-gradient:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
+}
+
+.btn-cancel {
+    color: #dc3545;
+    background-color: transparent;
+    border-color: #dc3545;
+    padding: 8px 20px;
+    border-radius: 25px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.btn-cancel:hover {
+    background: #dc3545;
+}
+
+/* Remove top border from table inside card with rounded corners */
+.custom-table-card .table {
+    border-top: none;
+}
+
+.custom-table-card .card-header {
+    border-bottom: none;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
+
+.custom-navbar {
+    background: #fff;
+    box-shadow: 0 2px 12px rgba(54, 209, 220, 0.07);
+    padding: 0.8rem 2.5rem;
+    border-radius: 0 0 1.2rem 1.2rem;
+    min-height: 70px;
+}
+
+.uni-name {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #ff7f32;
+    letter-spacing: 1.5px;
+    text-shadow: 0 1px 0 #fff3e0;
+}
+
+.taskbar .nav-link-custom {
+    font-size: 1.08rem;
+    font-weight: 600;
+    color: #2196f3;
+    padding: 0.3rem 1.1rem;
+    border-radius: 999px;
+    transition: background 0.18s, color 0.18s;
+    text-decoration: none;
+}
+
+    .taskbar .nav-link-custom:hover, .btn-register.nav-link-custom:hover {
+        background: linear-gradient(90deg, #36d1dc 0%, #5b86e5 100%);
+        color: #fff !important;
+        text-decoration: none;
+    }
+
+.btn-orange {
+    background: linear-gradient(90deg, #ff9800 0%, #ffb347 100%);
+    color: #fff !important;
+    font-weight: 600;
+    border: none;
+    border-radius: 25px;
+    padding: 0.45rem 1.5rem;
+    transition: background 0.18s, color 0.18s;
+    box-shadow: 0 2px 8px rgba(255, 152, 0, 0.10);
+}
+
+    .btn-orange:hover, .btn-orange:focus {
+        background: linear-gradient(90deg, #ffb347 0%, #ff9800 100%);
+        color: #fff !important;
+    }
+
+.user-menu-btn {
+    background: #f5faff;
+    border-radius: 25px;
+    font-weight: 600;
+    color: #2196f3;
+    border: none;
+    padding: 0.4rem 1.2rem;
+    transition: background 0.18s;
+}
+
+    .user-menu-btn:hover, .user-menu-btn:focus {
+        background: #e3f2fd;
+        color: #1976d2;
+    }
+
+    .btn-gradient-outline {
+        position: relative;
+        z-index: 1;
+        color: #36d1dc;
+        font-weight: 600;
+        border: 2px solid transparent;
+        border-radius: 25px;
+        padding: 0.45rem 1.5rem;
+        background: linear-gradient(white, white) padding-box, /* inner */
+        linear-gradient(90deg, #36d1dc 0%, #5b86e5 100%) border-box; /* border */
+        transition: background 0.18s, color 0.18s;
+        box-shadow: 0 2px 8px rgba(54, 209, 220, 0.10);
+    }
+
+    .btn-gradient-outline,
+    .btn-gradient-outline:visited {
+        color: #36d1dc;
+        background-clip: padding-box, border-box;
+        -webkit-background-clip: padding-box, border-box;
+    }
+
+    .btn-gradient-outline:hover, .btn-gradient-outline:focus {
+        color: #fff !important;
+        background: linear-gradient(90deg, #36d1dc 0%, #5b86e5 100%);
+        box-shadow: 0 4px 16px rgba(54, 209, 220, 0.18);
+    }
+

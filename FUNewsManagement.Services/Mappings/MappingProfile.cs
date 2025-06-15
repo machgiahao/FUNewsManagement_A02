@@ -13,8 +13,9 @@ namespace FUNewsManagement.Services.Mappings
     {
         public MappingProfile()
         {
-            CreateMap<SystemAccount, AccountDto>();
-            CreateMap<AccountDto, SystemAccount>();
+            CreateMap<SystemAccount, AccountDto>().ReverseMap();
+            CreateMap<RegisterDto, SystemAccount>();
+
         }
     }
 }

@@ -1,0 +1,119 @@
+﻿@model NewsManagementMVC.Models.ViewModels.NewsArticle.CreateNewsArticleViewModel
+
+<form method="post" asp-page-handler="Create" enctype="multipart/form-data" class="p-3">
+    <div class="row g-3">
+        <div class="col-md-6">
+            <label asp-for="NewsTitle" class="form-label fw-bold">Title</label>
+            <input asp-for="NewsTitle" class="form-control" placeholder="Enter news title" />
+            <span asp-validation-for="NewsTitle" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label asp-for="Headline" class="form-label fw-bold">Headline</label>
+            <input asp-for="Headline" class="form-control" placeholder="Enter headline" />
+            <span asp-validation-for="Headline" class="text-danger"></span>
+        </div>
+        <div class="col-12">
+            <label asp-for="NewsContent" class="form-label fw-bold">Content</label>
+            <textarea asp-for="NewsContent" class="form-control" rows="5" placeholder="Enter news content"></textarea>
+            <span asp-validation-for="NewsContent" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label asp-for="NewsSource" class="form-label fw-bold">Source</label>
+            <input asp-for="NewsSource" class="form-control" placeholder="Enter news source" />
+            <span asp-validation-for="NewsSource" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label asp-for="CategoryId" class="form-label fw-bold">Category</label>
+            <select asp-for="CategoryId" asp-items="@(ViewData["CategoryId"] as SelectList)" class="form-select">
+                <option value="">-- Select Category --</option>
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label asp-for="NewsStatus" class="form-label fw-bold">Status</label>
+            <select asp-for="NewsStatus" class="form-select">
+                <option value="">-- Status --</option>
+                <option value="false">Inactive</option>
+                <option value="true">Active</option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label asp-for="ImageFile" class="form-label fw-bold">Image</label>
+            <input asp-for="ImageFile" type="file" class="form-control" accept="image/*" />
+            <span asp-validation-for="ImageFile" class="text-danger"></span>
+        </div>
+        <div class="col-12">
+            <label asp-for="SelectedTagIds" class="form-label fw-bold">Tags</label>
+            <div class="d-flex flex-wrap gap-2 tag-pill-container">
+                @foreach (var tag in (ViewData["TagIds"] as MultiSelectList))
+                {
+                    <label class="tag-pill form-check-label mb-0">
+                        <input type="checkbox" class="form-check-input tag-checkbox me-1" name="SelectedTagIds" value="@tag.Value" id="tag_@tag.Value" />
+                        @tag.Text
+                    </label>
+                }
+            </div>
+        </div>
+
+        <div class="col-12 text-end mt-3">
+            <button type="submit" class="btn btn-primary px-4">Create</button>
+        </div>
+    </div>
+</form>
+
+
+
+<style>
+    .modal-lg-custom {
+        max-width: 900px;
+        width: 90vw;
+    }
+
+    .tag-pill-container {
+        margin-top: 0.5rem;
+    }
+
+    .tag-pill {
+        display: flex;
+        align-items: center;
+        background: linear-gradient(90deg, #36d1dc 0%, #5b86e5 100%);
+        color: #fff;
+        border-radius: 999px;
+        padding: 0.4em 1em 0.4em 0.8em;
+        box-shadow: 0 2px 8px rgba(54, 209, 220, 0.15);
+        font-size: 1em;
+        font-weight: 500;
+        cursor: pointer;
+        transition: box-shadow 0.2s;
+        margin-bottom: 0.5em;
+    }
+
+    .tag-pill input[type="checkbox"] {
+        accent-color: #fff;
+        margin-right: 0.5em;
+    }
+
+    .tag-pill:hover {
+        box-shadow: 0 4px 16px rgba(54, 209, 220, 0.25);
+        opacity: 0.9;
+    }
+
+</style>
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Toggle "Select All"
+        $('#selectAllTags').on('change', function () {
+            $('.tag-checkbox').prop('checked', this.checked);
+        });
+
+        // If any checkbox is unchecked, uncheck "Select All"
+        $('.tag-checkbox').on('change', function () {
+            if (!this.checked) {
+                $('#selectAllTags').prop('checked', false);
+            } else if ($('.tag-checkbox:checked').length === $('.tag-checkbox').length) {
+                $('#selectAllTags').prop('checked', true);
+            }
+        });
+    </script>
+}

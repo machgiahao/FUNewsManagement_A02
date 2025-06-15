@@ -1,0 +1,25 @@
+﻿@model dynamic
+@{
+    var formPartial = ViewData["CreateFormPartial"] as string ?? "";
+}
+
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg-custom modal-dialog-custom-top">
+        <div class="modal-content">
+            <div class="modal-header" style="background: linear-gradient(to right, #36d1dc, #5b86e5); color: white;">
+                <h5 class="modal-title" id="createModalLabel">Create</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @if (!string.IsNullOrEmpty(formPartial))
+                {
+                    @await Html.PartialAsync(formPartial, (object)Model)
+                }
+                else
+                {
+                    <div class="alert alert-warning">No form partial specified.</div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

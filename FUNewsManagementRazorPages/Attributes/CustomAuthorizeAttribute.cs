@@ -19,13 +19,12 @@ namespace NewsManagementMVC.Attributes
             var role = context.HttpContext.Session.GetInt32("Role");
             if(role == null)
             {
-                Console.Write($"Role null");
-                context.Result = new RedirectToActionResult("Login", "Auth", null);
+                context.Result = new RedirectToPageResult("/Auth/Login", "Login", null);
                 return;
             }
             if(!_allowedRoles.Contains(role.Value))
             {
-                context.Result = new RedirectToActionResult("AccessDenied", "Auth", null);
+                context.Result = new RedirectToPageResult("/Auth/AccessDenied");
             }
 
         }
