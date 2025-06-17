@@ -1,0 +1,207 @@
+﻿@page
+@model ReportModel
+
+<style>
+    .report-header {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1.2rem;
+        color: #222;
+    }
+    .report-filter-card {
+        background: #f7fafd;
+        border-radius: 14px;
+        box-shadow: 0 2px 8px rgba(54,209,220,0.07);
+        padding: 1.5rem 2rem 1rem 2rem;
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: flex-end;
+        gap: 2rem;
+        flex-wrap: wrap;
+    }
+    .report-filter-card label {
+        font-weight: 600;
+        color: #2196f3;
+        margin-right: 0.5rem;
+    }
+    .report-filter-card input[type="date"] {
+        border-radius: 8px;
+        border: 1.5px solid #e3eaf3;
+        padding: 0.3rem 0.7rem;
+        font-size: 1rem;
+        margin-right: 1.2rem;
+    }
+    .report-summary {
+        display: flex;
+        gap: 2.5rem;
+        margin-bottom: 1.5rem;
+        font-size: 1.1rem;
+    }
+    .report-summary .summary-item {
+        background: linear-gradient(90deg, #36d1dc 0%, #5b86e5 100%);
+        color: #fff;
+        border-radius: 10px;
+        padding: 0.7rem 1.5rem;
+        font-weight: 600;
+        box-shadow: 0 2px 8px rgba(54,209,220,0.10);
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+    }
+    .table-report {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(54,209,220,0.07);
+        overflow: hidden;
+    }
+    .table-report th {
+        background: linear-gradient(90deg, #36d1dc 0%, #5b86e5 100%);
+        color: #fff;
+        font-weight: 700;
+        border: none;
+    }
+    .table-report tr:nth-child(even) {
+        background: #f7fafd;
+    }
+    .table-report td, .table-report th {
+        padding: 0.7rem 1rem;
+        vertical-align: middle;
+    }
+    .status-badge {
+        padding: 0.3em 1em;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 0.98rem;
+        display: inline-block;
+    }
+    .status-badge.active {
+        background: #e0f7fa;
+        color: #0097a7;
+    }
+    .status-badge.inactive {
+        background: #ffeaea;
+        color: #d32f2f;
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="report-header">News Articles Report</div>
+
+    <div class="report-filter-card">
+        <form method="get" class="d-flex align-items-end flex-wrap gap-3">
+            <div>
+                <label>Start Date:</label>
+                <input type="date" asp-for="ReportViewModel.StartDate" />
+            </div>
+            <div>
+                <label>End Date:</label>
+                <input type="date" asp-for="ReportViewModel.EndDate" />
+            </div>
+            <button type="submit" class="btn btn-gradient">Filter</button>
+        </form>
+    </div>
+
+    @if (Model.NewsArticles != null && Model.NewsArticles.Any())
+    {
+        var total = Model.NewsArticles.Count;
+        var active = Model.NewsArticles.Count(a => a.NewsStatus == true);
+        var inactive = Model.NewsArticles.Count(a => a.NewsStatus != true);
+
+        <div class="report-summary">
+            <div class="summary-item">
+                <i class="bi bi-newspaper"></i> Total: @total
+            </div>
+            <div class="summary-item">
+                <i class="bi bi-check-circle"></i> Active: @active
+            </div>
+            <div class="summary-item">
+                <i class="bi bi-x-circle"></i> Inactive: @inactive
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <canvas id="statusPieChart"></canvas>
+            </div>
+            <div class="col-md-6">
+                <canvas id="categoryBarChart"></canvas>
+            </div>
+        </div>
+        <table class="table table-bordered table-report">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Created Date</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var article in Model.NewsArticles)
+                {
+                    <tr>
+                        <td>@article.NewsTitle</td>
+                        <td>@article.CreatedDate?.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>@article.Category?.CategoryName</td>
+                        <td>
+                            <span class="status-badge @(article.NewsStatus == true ? "active" : "inactive")">
+                                @(article.NewsStatus == true ? "Active" : "Inactive")
+                            </span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else if (Model.ReportViewModel.StartDate.HasValue && Model.ReportViewModel.EndDate.HasValue)
+    {
+        <div class="alert alert-info mt-4">No news articles found for the selected period.</div>
+    }
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Pie Chart Data
+    const statusPieCtx = document.getElementById('statusPieChart').getContext('2d');
+    new Chart(statusPieCtx, {
+        type: 'pie',
+        data: {
+            labels: ['Active', 'Inactive'],
+            datasets: [{
+                data: [@Model.ActiveCount, @Model.InactiveCount],
+                backgroundColor: ['#36d1dc', '#ff7675'],
+            }]
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Article Status Distribution'
+                }
+            }
+        }
+    });
+
+    // Bar Chart Data
+    const categoryBarCtx = document.getElementById('categoryBarChart').getContext('2d');
+    new Chart(categoryBarCtx, {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.CategoryLabels)),
+            datasets: [{
+                label: 'Articles per Category',
+                data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.CategoryCounts)),
+                backgroundColor: '#5b86e5'
+            }]
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Articles by Category'
+                }
+            },
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+</script>

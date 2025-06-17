@@ -101,7 +101,8 @@
         })
     }
 }
-
+<script src="~/js/signalR/dist/browser/signalr.js"></script>
+<script src="~/js/site.js"></script>
 <style>
     .create-btn {
         background: linear-gradient(90deg, #36d1dc 0%, #5b86e5 100%);
@@ -308,15 +309,15 @@
         color: #0097a7;
     }
 
-        .status-badge.active {
-            background: #e0f7fa;
-            color: #0097a7;
-        }
+    .status-badge.active {
+        background: #e0f7fa;
+        color: #0097a7;
+    }
 
-        .status-badge.inactive {
-            background: #ffeaea;
-            color: #d32f2f;
-        }
+    .status-badge.inactive {
+        background: #ffeaea;
+        color: #d32f2f;
+    }
 
     .category-badge {
         background: #e3f2fd;
@@ -358,7 +359,6 @@
         align-items: center;
         gap: 0.3em;
     }
-
 </style>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

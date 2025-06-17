@@ -23,15 +23,26 @@ namespace FUNewsManagementRazorPages.Pages.SystemAccount
         }
 
         public IList<AccountViewModel> SystemAccount { get; set; } = new List<AccountViewModel>();
-        public int CurrentPage { get; set; }
-        public int TotalPages { get; set; }
-        public int PageSize { get; set; } = 4;
+        [BindProperty(SupportsGet = true)]
+        public SearchViewModel Search { get; set; } = new();
+
 
         public async Task OnGetAsync()
         {
             var accounts = await _accountService.GetAllAccountsAsync();
+
+            if (!string.IsNullOrWhiteSpace(Search.Name))
+                accounts = accounts.Where(a => a.AccountName != null && a.AccountName.Contains(Search.Name, StringComparison.OrdinalIgnoreCase)).ToList();
+
+            if (!string.IsNullOrWhiteSpace(Search.Email))
+                accounts = accounts.Where(a => a.AccountEmail != null && a.AccountEmail.Contains(Search.Email, StringComparison.OrdinalIgnoreCase)).ToList();
+
+            if (Search.Role.HasValue)
+                accounts = accounts.Where(a => a.AccountRole == Search.Role).ToList();
+
             SystemAccount = _mapper.Map<List<AccountViewModel>>(accounts);
         }
+
 
         [BindProperty]
         public CreateAccountViewModel CreateAccountViewModel { get; set; } = new();

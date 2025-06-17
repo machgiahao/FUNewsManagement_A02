@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using FUNewsManagement.BusinessObjects.Entities;
 using FUNewsManagementSystem.BusinessObject.Enums;
 using NewsManagementMVC.Attributes;
+using FUNewsManagementRazorPages.SignalR;
+using Microsoft.AspNetCore.SignalR;
 
 namespace FUNewsManagementRazorPages.Pages.NewsArticles
 {
@@ -16,13 +18,14 @@ namespace FUNewsManagementRazorPages.Pages.NewsArticles
         private readonly ICategoryService _contextCategory;
         private readonly ITagService _contextTag;
         private readonly IMapper _mapper;
-
-        public IndexModel(INewsArticleService contextNewsArticle, ICategoryService contextCategory, ITagService contextTag, IMapper mapper)
+        private readonly IHubContext<SignalRServer> _hubContext;
+        public IndexModel(INewsArticleService contextNewsArticle, ICategoryService contextCategory, ITagService contextTag, IMapper mapper, IHubContext<SignalRServer> hubContext)
         {
             _contextNewsArticle = contextNewsArticle;
             _contextCategory = contextCategory;
             _contextTag = contextTag;
             _mapper = mapper;
+            _hubContext = hubContext;   
         }
 
         public IList<NewsArticleViewModel> NewsArticle { get;set; } = default!;
@@ -91,7 +94,7 @@ namespace FUNewsManagementRazorPages.Pages.NewsArticles
             var userId = HttpContext.Session.GetInt32("UserId");
             newsArticle.CreatedById = (short)userId.Value;
             await _contextNewsArticle.SaveNewsArticleAsync(newsArticle);
-
+            await _hubContext.Clients.All.SendAsync("LoadAllItems");
             return RedirectToPage();
         }
 
@@ -201,6 +204,7 @@ namespace FUNewsManagementRazorPages.Pages.NewsArticles
             }
 
             await _contextNewsArticle.UpdateNewsArticleAsync(article);
+            await _hubContext.Clients.All.SendAsync("LoadAllItems");
             return RedirectToPage("./Index");
         }
 
@@ -212,6 +216,7 @@ namespace FUNewsManagementRazorPages.Pages.NewsArticles
             if (!IsStaff())
                 return RedirectToPage("/Auth/AccessDenied");
             await _contextNewsArticle.DeleteNewsArticleAsync(id);
+            await _hubContext.Clients.All.SendAsync("LoadAllItems");
             return RedirectToPage("./Index");
         }
         

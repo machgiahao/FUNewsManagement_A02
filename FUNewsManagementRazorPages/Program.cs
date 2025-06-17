@@ -1,4 +1,5 @@
 using FUNewsManagement.Services.Mappings;
+using FUNewsManagementRazorPages.SignalR;
 using FUNewsManagementSystem.DataAccess;
 using FUNewsManagementSystem.Services;
 
@@ -12,6 +13,7 @@ namespace FUNewsManagementRazorPages
 
             // Add services to the container.
             builder.Services.AddRazorPages();
+            builder.Services.AddSignalR();
             builder.Services.AddAutoMapper(
                 typeof(MappingProfile),
                 typeof(ViewModelMappingProfile));
@@ -55,7 +57,7 @@ namespace FUNewsManagementRazorPages
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.MapHub<SignalRServer>("/signalRServer");
             app.MapRazorPages();
             app.MapGet("/", context =>
             {

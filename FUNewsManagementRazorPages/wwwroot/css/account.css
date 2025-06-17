@@ -1,106 +1,239 @@
-﻿
-.gradient-header {
-    background: linear-gradient(to right, #36d1dc, #5b86e5);
-    color: #fff;
-    border-radius: 1.2rem 1.2rem 0 0;
-    padding: 2rem 2rem 1.5rem 2rem;
+﻿body {
+    background: #fafcff;
+}
+
+.account-center-container {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding-top: 40px;
+}
+
+.account-card {
+    width: 90%;
+    max-width: 1300px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 16px rgba(44, 62, 80, 0.08);
+    overflow: hidden;
+}
+
+.account-header {
+    background: linear-gradient(90deg, #41d0db 0%, #5985e3 100%);
+    color: #fff;
+    font-weight: 500;
+    font-size: 1.1rem;
+    text-align: center;
+    padding: 18px 0;
     position: relative;
 }
 
-.header-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    flex: 1;
-    text-align: center;
-    margin-left: 2rem;
-}
-
-.create-btn-circle {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
+.account-plus-btn {
+    position: absolute;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
     background: #fff;
-    border: 2px solid #36d1dc;
+    color: #41d0db;
+    border: none;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 8px rgba(54, 209, 220, 0.15);
-    transition: box-shadow 0.2s, border-color 0.2s;
-    position: absolute;
-    right: 2rem;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 2;
-}
-
-    .create-btn-circle:hover {
-        border-color: #5b86e5;
-        box-shadow: 0 4px 16px rgba(91, 134, 229, 0.18);
-    }
-
-    .create-btn-circle i {
-        color: #36d1dc;
-        font-size: 1.7rem;
-    }
-
-.gradient-header .header-title {
-    font-size: 1.2rem;
-    font-weight: bold;
-    flex: 1;
-    text-align: center;
-}
-
-.gradient-header .header-actions i {
+    box-shadow: 0 2px 8px rgba(65, 208, 219, 0.12);
     font-size: 1.3rem;
-    margin-left: 1rem;
-    cursor: pointer;
+    transition: box-shadow 0.2s;
 }
 
-.custom-table-card {
-    border-radius: 1.2rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    border: none;
+.account-plus-btn:hover {
+    box-shadow: 0 4px 16px rgba(65, 208, 219, 0.18);
+    color: #5985e3;
 }
 
-.custom-table th {
-    vertical-align: middle;
-    font-weight: 500;
-}
-
-    .custom-table th .bi {
-        font-size: 0.9rem;
-        margin-left: 0.2rem;
-        color: #5b86e5;
-    }
-
-.custom-table td, .custom-table th {
+.account-search-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 24px 0 24px;
     background: #fff;
 }
 
-.custom-checkbox {
-    width: 1.2rem;
-    height: 1.2rem;
+.account-search-group {
+    position: relative;
+    display: flex;
+    align-items: center;
 }
 
-.pagination .page-link {
-    border-radius: 50% !important;
-    margin: 0 0.15rem;
-    color: #5b86e5;
+.account-search-group i {
+    position: absolute;
+    left: 10px;
+    color: #b0b8c1;
+    font-size: 1rem;
 }
 
-.pagination .active .page-link {
-    background: #5b86e5;
+.account-search-group input {
+    width: 200px;
+    padding: 6px 10px 6px 32px;
+    border: 1px solid #e3e8ee;
+    border-radius: 6px;
+    font-size: 0.98rem;
+    background: #f8fafc;
+    transition: border 0.2s;
+}
+
+.account-search-group input:focus {
+    border: 1.5px solid #41d0db;
+    outline: none;
+}
+
+.account-role-select {
+    min-width: 110px;
+    padding: 6px 10px;
+    border: 1px solid #e3e8ee;
+    border-radius: 6px;
+    background: #f8fafc;
+    font-size: 0.98rem;
+}
+
+.account-search-btn {
+    background: #fff;
+    border: 1px solid #e3e8ee;
+    border-radius: 6px;
+    padding: 6px 12px;
+    color: #41d0db;
+    font-size: 1.1rem;
+    transition: background 0.2s, color 0.2s;
+}
+
+.account-search-btn:hover {
+    background: #41d0db;
     color: #fff;
-    border: none;
 }
 
-.rows-dropdown {
+.account-table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    background: #fff;
+}
+
+.account-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    margin: 0;
+}
+
+.account-table th, .account-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #f0f4f8;
+    font-size: 1rem;
+    background: #fff;
+}
+
+.account-table th {
+    color: #222;
+    font-weight: 600;
+    background: #f8fafc;
+}
+
+.account-table tr:last-child td {
+    border-bottom: none;
+}
+
+.account-table tr:hover td {
+    background: #f4faff;
+}
+
+.account-role-badge {
+    display: inline-block;
+    padding: 2px 12px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.account-role-badge.lecturer {
+    background: #e0f7fa;
+    color: #0097a7;
+}
+
+.account-role-badge.admin {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.account-action-btn {
+    border: 1.5px solid #e3e8ee;
+    background: #fff;
+    border-radius: 6px;
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 4px;
+    font-size: 1.1rem;
+    transition: background 0.2s, color 0.2s, border 0.2s;
+}
+
+.account-action-btn.edit {
+    color: #1976d2;
+    border-color: #1976d2;
+}
+
+.account-action-btn.edit:hover {
+    background: #1976d2;
+    color: #fff;
+}
+
+.account-action-btn.delete {
+    color: #e53935;
+    border-color: #e53935;
+}
+
+.account-action-btn.delete:hover {
+    background: #e53935;
+    color: #fff;
+}
+.circle-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
     border: none;
-    border-bottom: 1px solid #ccc;
-    background: transparent;
-    width: 80px;
-    margin-right: 1rem;
+    outline: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin-right: 8px;
+    transition: box-shadow 0.2s, transform 0.2s;
+    box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
+    color: #fff;
+    cursor: pointer;
+    padding: 0;
+}
+
+.circle-btn.edit {
+    background: linear-gradient(135deg, #41d0db 0%, #5985e3 100%);
+}
+
+.circle-btn.delete {
+    background: #ff5252;
+}
+
+    .circle-btn.edit:hover,
+    .circle-btn.delete:hover {
+        transform: translateY(-2px) scale(1.07);
+        box-shadow: 0 4px 16px rgba(44, 62, 80, 0.15);
+    }
+
+.circle-btn i {
+    color: #fff;
+    font-size: 1.3rem;
+    pointer-events: none;
 }
