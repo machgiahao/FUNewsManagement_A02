@@ -1,0 +1,109 @@
+﻿@page
+@model FUNewsManagementRazorPages.Pages.SystemAccount.ProfileModel
+@using FUNewsManagementSystem.BusinessObject.Enums
+@{
+    var roleName = Enum.GetName(typeof(AccountRole), Model.SystemAccount.AccountRole);
+}
+
+<h2 class="mb-4">Profile</h2>
+
+
+<div class="card profile-card">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-4">Name</dt>
+            <dd class="col-sm-8">@Model.SystemAccount.AccountName</dd>
+
+            <dt class="col-sm-4">Email</dt>
+            <dd class="col-sm-8">@Model.SystemAccount.AccountEmail</dd>
+
+            <dt class="col-sm-4">Role</dt>
+            <dd class="col-sm-8">@roleName</dd> 
+        </dl>
+    </div>
+</div>
+
+<style>
+    .profile-bg {
+        background: #f8fafc;
+        min-height: 100vh;
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+    }
+
+    .profile-heading {
+        font-size: 2.5rem;
+        font-weight: 800;
+        text-align: center;
+        background: linear-gradient(90deg, #36d1dc 0%, #5b86e5 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-fill-color: transparent;
+        letter-spacing: 1.5px;
+        margin-bottom: 2rem;
+        position: relative;
+        text-shadow: 0 2px 8px rgba(54, 209, 220, 0.10);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .profile-heading::after {
+        content: "";
+        display: block;
+        width: 100px;
+        height: 4px;
+        margin: 0.5rem auto 0 auto;
+        background: linear-gradient(90deg, #36d1dc 0%, #5b86e5 100%);
+        border-radius: 3px;
+        opacity: 0.7;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: -12px;
+    }
+
+    .profile-card {
+        max-width: 400px;
+        margin: 2rem auto;
+        box-shadow: 0 2px 8px rgba(54, 209, 220, 0.10);
+        border-radius: 16px;
+        background: #fff;
+        border: 1.5px solid #0dcaf0;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .profile-card .card-body {
+        padding: 2rem;
+    }
+
+    .profile-card dt {
+        font-weight: 700;
+        color: #36b3e9;
+    }
+
+    .profile-card dd {
+        font-weight: 500;
+        color: #444;
+        margin-bottom: 1rem;
+    }
+
+    .profile-card-underline {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 6px;
+        width: 100%;
+        background: linear-gradient(90deg, #36d1dc 0%, #5b86e5 100%);
+        border-radius: 0 0 16px 16px;
+        opacity: 0.7;
+        z-index: 2;
+        margin: 0;
+        content: "";
+        display: block;
+        pointer-events: none;
+    }
+</style>

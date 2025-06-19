@@ -44,7 +44,7 @@ namespace FUNewsManagementRazorPages.Pages.Auth
                     {
                         return RedirectToPage("/SystemAccount/Index");
                     }
-                    return RedirectToPage("/Index");
+                    return RedirectToPage("/NewsArticles/Index");
                 }
                 else
                 {

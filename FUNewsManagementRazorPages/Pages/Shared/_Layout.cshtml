@@ -50,8 +50,6 @@
                         <a href="/Auth/Register" class="btn btn-gradient-outline fw-bold me-2 nav-link-custom">Register</a>
                         <a href="/Auth/Login" class="btn btn-gradient ms-1">Login</a>
                     }
-
-
                     else
                     {
                         <div class="dropdown">
@@ -63,9 +61,9 @@
                                 <span class="text-primary">Hey, @username</span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end user-dropdown" aria-labelledby="userMenuDropdown">
-                                <li><a class="dropdown-item" href="/Account/Profile">Profile</a></li>
                                 @if (isStaff)
                                 {
+                                    <li><a class="dropdown-item" href="/SystemAccount/Profile">Profile</a></li>
                                     <li><a class="dropdown-item" href="/NewsArticles/MyNewsArticle">My News Article</a></li>
                                 }
                                 <li><hr class="dropdown-divider"></li>

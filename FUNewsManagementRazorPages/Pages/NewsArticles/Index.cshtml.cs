@@ -14,16 +14,16 @@ namespace FUNewsManagementRazorPages.Pages.NewsArticles
 {
     public class IndexModel : PageModel
     {
-        private readonly INewsArticleService _contextNewsArticle;
-        private readonly ICategoryService _contextCategory;
-        private readonly ITagService _contextTag;
+        private readonly INewsArticleService _newsArticleService;
+        private readonly ICategoryService _categoryService;
+        private readonly ITagService _tagService;
         private readonly IMapper _mapper;
         private readonly IHubContext<SignalRServer> _hubContext;
-        public IndexModel(INewsArticleService contextNewsArticle, ICategoryService contextCategory, ITagService contextTag, IMapper mapper, IHubContext<SignalRServer> hubContext)
+        public IndexModel(INewsArticleService newsArticleService, ICategoryService categoryService, ITagService tagService, IMapper mapper, IHubContext<SignalRServer> hubContext)
         {
-            _contextNewsArticle = contextNewsArticle;
-            _contextCategory = contextCategory;
-            _contextTag = contextTag;
+            _newsArticleService = newsArticleService;
+            _categoryService = categoryService;
+            _tagService = tagService;
             _mapper = mapper;
             _hubContext = hubContext;   
         }
@@ -34,7 +34,7 @@ namespace FUNewsManagementRazorPages.Pages.NewsArticles
         {
             var role = HttpContext.Session.GetInt32("Role");
             ViewData["Role"] = HttpContext.Session.GetInt32("Role");
-            var newsArticles = await _contextNewsArticle.GetNewsArticlesAsync();
+            var newsArticles = await _newsArticleService.GetNewsArticlesAsync();
             if (role == (int)AccountRole.Staff)
             {
                 NewsArticle = _mapper.Map<List<NewsArticleViewModel>>(newsArticles);
@@ -44,8 +44,8 @@ namespace FUNewsManagementRazorPages.Pages.NewsArticles
                 var activeNews = newsArticles.Where(n => n.NewsStatus == true); 
                 NewsArticle = _mapper.Map<List<NewsArticleViewModel>>(activeNews);
             }
-            ViewData["CategoryId"] = new SelectList(await _contextCategory.GetCategoriesAsync(), "CategoryId", "CategoryName");
-            ViewData["TagIds"] = new MultiSelectList(await _contextTag.GetTagsAsync(), "TagId", "TagName");
+            ViewData["CategoryId"] = new SelectList(await _categoryService.GetCategoriesAsync(), "CategoryId", "CategoryName");
+            ViewData["TagIds"] = new MultiSelectList(await _tagService.GetTagsAsync(), "TagId", "TagName");
         }
 
         [BindProperty]
@@ -55,8 +55,8 @@ namespace FUNewsManagementRazorPages.Pages.NewsArticles
         {
             if (!IsStaff())
                 return RedirectToPage("/Auth/AccessDenied");
-            ViewData["CategoryId"] = new SelectList(await _contextCategory.GetCategoriesAsync(), "CategoryId", "CategoryName");
-            ViewData["TagIds"] = new MultiSelectList(await _contextTag.GetTagsAsync(), "TagId", "TagName");
+            ViewData["CategoryId"] = new SelectList(await _categoryService.GetCategoriesAsync(), "CategoryId", "CategoryName");
+            ViewData["TagIds"] = new MultiSelectList(await _tagService.GetTagsAsync(), "TagId", "TagName");
 
             if (ModelState.IsValid)
             {
@@ -86,14 +86,14 @@ namespace FUNewsManagementRazorPages.Pages.NewsArticles
 
             if (CreateNewsArticle.SelectedTagIds != null && CreateNewsArticle.SelectedTagIds.Any())
             {
-                var tags = await _contextTag.GetTagsAsync();
+                var tags = await _tagService.GetTagsAsync();
                 newsArticle.Tags = tags.Where(t => CreateNewsArticle.SelectedTagIds.Contains(t.TagId)).ToList();
             }
 
             newsArticle.CreatedDate = DateTime.UtcNow;
             var userId = HttpContext.Session.GetInt32("UserId");
             newsArticle.CreatedById = (short)userId.Value;
-            await _contextNewsArticle.SaveNewsArticleAsync(newsArticle);
+            await _newsArticleService.SaveNewsArticleAsync(newsArticle);
             await _hubContext.Clients.All.SendAsync("LoadAllItems");
             return RedirectToPage();
         }
@@ -106,7 +106,7 @@ namespace FUNewsManagementRazorPages.Pages.NewsArticles
                 return NotFound();
             await OnGetAsync();
             // Get the news article with its related tags
-            var article = await _contextNewsArticle.GetNewsArticleByIdAsync(id);
+            var article = await _newsArticleService.GetNewsArticleByIdAsync(id);
             if (article == null)
                 return NotFound();
 
@@ -118,7 +118,7 @@ namespace FUNewsManagementRazorPages.Pages.NewsArticles
 
             // Load category dropdown options
             ViewData["CategoryId"] = new SelectList(
-                await _contextCategory.GetCategoriesAsync(),
+                await _categoryService.GetCategoriesAsync(),
                 "CategoryId",
                 "CategoryName",  // Use CategoryName, not CategoryId for display
                 article.CategoryId
@@ -126,7 +126,7 @@ namespace FUNewsManagementRazorPages.Pages.NewsArticles
 
             // Load tag options with selected values
             ViewData["TagIds"] = new MultiSelectList(
-                await _contextTag.GetTagsAsync(),
+                await _tagService.GetTagsAsync(),
                 "TagId",
                 "TagName",
                 EditNewsArticle.SelectedTagIds
@@ -148,12 +148,12 @@ namespace FUNewsManagementRazorPages.Pages.NewsArticles
             {
                 // If model state is invalid, reload necessary data and return to the page
                 ViewData["CategoryId"] = new SelectList(
-                    await _contextCategory.GetCategoriesAsync(),
+                    await _categoryService.GetCategoriesAsync(),
                     "CategoryId",
                     "CategoryName"
                 );
                 ViewData["TagIds"] = new MultiSelectList(
-                    await _contextTag.GetTagsAsync(),
+                    await _tagService.GetTagsAsync(),
                     "TagId",
                     "TagName",
                     EditNewsArticle.SelectedTagIds
@@ -162,7 +162,7 @@ namespace FUNewsManagementRazorPages.Pages.NewsArticles
                 return Page();
             }
 
-            var article = await _contextNewsArticle.GetNewsArticleByIdAsync(EditNewsArticle.NewsArticleId);
+            var article = await _newsArticleService.GetNewsArticleByIdAsync(EditNewsArticle.NewsArticleId);
             if (article == null)
                 return NotFound();
 
@@ -177,7 +177,7 @@ namespace FUNewsManagementRazorPages.Pages.NewsArticles
             // Update tags
             if (EditNewsArticle.SelectedTagIds != null && EditNewsArticle.SelectedTagIds.Any())
             {
-                var tags = await _contextTag.GetTagsAsync();
+                var tags = await _tagService.GetTagsAsync();
                 article.Tags = tags.Where(t => EditNewsArticle.SelectedTagIds.Contains(t.TagId)).ToList();
             }
             else
@@ -203,7 +203,7 @@ namespace FUNewsManagementRazorPages.Pages.NewsArticles
                 article.ImageUrl = $"/images/NewsArticle/{uniqueFileName}";
             }
 
-            await _contextNewsArticle.UpdateNewsArticleAsync(article);
+            await _newsArticleService.UpdateNewsArticleAsync(article);
             await _hubContext.Clients.All.SendAsync("LoadAllItems");
             return RedirectToPage("./Index");
         }
@@ -215,7 +215,7 @@ namespace FUNewsManagementRazorPages.Pages.NewsArticles
         {
             if (!IsStaff())
                 return RedirectToPage("/Auth/AccessDenied");
-            await _contextNewsArticle.DeleteNewsArticleAsync(id);
+            await _newsArticleService.DeleteNewsArticleAsync(id);
             await _hubContext.Clients.All.SendAsync("LoadAllItems");
             return RedirectToPage("./Index");
         }
