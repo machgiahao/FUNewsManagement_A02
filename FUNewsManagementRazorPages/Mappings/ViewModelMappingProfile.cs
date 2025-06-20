@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FUNewsManagementRazorPages.ViewModels.Auth;
+using FUNewsManagementRazorPages.ViewModels.Category;
 using NewsManagementMVC.Models.ViewModels.Auth;
 using NewsManagementMVC.Models.ViewModels.NewsArticle;
 
@@ -31,6 +32,7 @@ namespace FUNewsManagement.Services.Mappings
                 .ForMember(dest => dest.Tags, opt => opt.Ignore());
             CreateMap<EditNewsArticleViewModel, NewsArticle>().ReverseMap();
 
+            CreateMap<CategoryViewModel, Category>().ReverseMap();
         }
     }
 }

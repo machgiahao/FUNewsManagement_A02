@@ -1,0 +1,133 @@
+@page
+@using FUNewsManagementRazorPages.ViewModels.Category
+@model FUNewsManagementRazorPages.Pages.Categories.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    ViewData["CreateFormPartial"] = "Categories/_CreateForm";
+    ViewData["EditFormPartial"] = "Categories/_EditForm";
+}
+<link rel="stylesheet" href="~/css/category.css"/>
+@if (TempData["DeleteError"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["DeleteError"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<div class="main-card mx-auto my-4">
+    <!-- Header -->
+    <div class="main-header d-flex justify-content-between align-items-center px-4 py-3">
+        <span class="main-header-title">Categories</span>
+        <button type="button" class="btn btn-light rounded-circle d-flex align-items-center justify-content-center shadow-sm"
+                data-bs-toggle="modal" data-bs-target="#createModal" title="Add Category" style="width: 40px; height: 40px;">
+            <i class="bi bi-plus-lg fs-4"></i>
+        </button>
+    </div>
+
+    <!-- Search/filter row (UI only, not functional) -->
+    <form method="get" class="main-search-row d-flex gap-2 align-items-center px-4 py-3">
+        <div class="input-group search-input">
+            <input type="text" class="form-control border-start-0" placeholder="Search by name..." name="Search.SearchName" value="@Model.Search.SearchName" />
+        </div>
+        <div class="input-group search-input">
+            <input type="text" class="form-control border-start-0" placeholder="Search by description..." name="SearchDescription" value="@Model.Search.SearchDescription" />
+        </div>
+        <div>
+            <select class="form-select filter-select" name="Search.SearchStatus">
+                <option value="" selected="@(string.IsNullOrEmpty(Model.Search.SearchStatus) ? "selected" : null)">All Status</option>
+                <option value="Active" selected="@(Model.Search.SearchStatus == "Active" ? "selected" : null)">Active</option>
+                <option value="Inactive" selected="@(Model.Search.SearchStatus == "Inactive" ? "selected" : null)">Inactive</option>
+            </select>
+        </div>
+        <button class="btn btn-search d-flex align-items-center justify-content-center" type="submit">
+            <i class="bi bi-search"></i>
+        </button>
+    </form>
+
+    @await Html.PartialAsync("_CreateModal", new CategoryViewModel())
+    @await Html.PartialAsync("_EditModal", Model.UpdateCategoryViewModel)
+
+    <div class="table-responsive">
+        <table class="table table-hover main-table mb-0">
+            <thead>
+                <tr>
+                    <th style="width: 16%;">Name</th>
+                    <th style="width: 44%;">Description</th>
+                    <th style="width: 14%;">Status</th>
+                    <th style="width: 14%;">Parent</th>
+                    <th style="width: 12%;" class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CategoryViewModel)
+                {
+                    <tr class="table-row-link" data-href="@Url.Page("Details", new { id = item.CategoryId })">
+                        <td class="align-middle">@Html.DisplayFor(modelItem => item.CategoryName)</td>
+                        <td class="align-middle text-wrap" style="white-space: normal;">@Html.DisplayFor(modelItem => item.CategoryDesciption)</td>
+                        <td class="align-middle">
+                            @if (item.IsActive)
+                            {
+                                <span class="badge status-badge status-active">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge status-badge status-inactive">Inactive</span>
+                            }
+                        </td>
+                        <td class="align-middle">@(!string.IsNullOrEmpty(item.ParentCategoryName) ? item.ParentCategoryName : "--")</td>
+                        <td class="align-middle text-center">
+                            <a asp-page-handler="Edit" asp-route-id="@item.CategoryId"
+                               class="btn btn-icon btn-edit me-2" title="Edit" onclick="event.stopPropagation();">
+                                <i class="bi bi-pencil fs-5"></i>
+                            </a>
+                            <button type="button"
+                                    class="btn btn-icon btn-delete"
+                                    title="Delete"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal-@item.CategoryId"
+                                    onclick="event.stopPropagation();">
+                                <i class="bi bi-trash fs-5"></i>
+                            </button>
+                            @await Html.PartialAsync("_DeleteModal", item.CategoryId.ToString(), new ViewDataDictionary(ViewData) { { "Name", item.CategoryName } })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    @if (ViewData["ShowEditModal"] as bool? == true)
+    {
+        <script>
+            var editModal = new bootstrap.Modal(document.getElementById('editModal'));
+            editModal.show();
+        </script>
+    }
+    <script>
+        document.querySelectorAll('.table-row-link').forEach(function(row) {
+            row.addEventListener('click', function(e) {
+                // Ignore clicks on buttons or links inside the row
+                if (e.target.closest('a,button')) return;
+                window.location = row.getAttribute('data-href');
+            });
+        });
+        setTimeout(function () {
+            document.querySelectorAll('.alert-dismissible').forEach(function(alert) {
+                var bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+                bsAlert.close();
+            });
+        }, 3000);
+    </script>
+
+}

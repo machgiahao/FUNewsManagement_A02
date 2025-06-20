@@ -1,0 +1,29 @@
+﻿@model FUNewsManagementRazorPages.ViewModels.Category.CategoryViewModel
+
+<form method="post" asp-page-handler="Create" class="category-modal-form">
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+    <div class="form-floating mb-3">
+        <input asp-for="CategoryName" class="form-control" placeholder="Category Name" />
+        <label asp-for="CategoryName"></label>
+        <span asp-validation-for="CategoryName" class="text-danger small"></span>
+    </div>
+    <div class="form-floating mb-3">
+        <input asp-for="CategoryDesciption" class="form-control" placeholder="Category Description" />
+        <label asp-for="CategoryDesciption"></label>
+        <span asp-validation-for="CategoryDesciption" class="text-danger small"></span>
+    </div>
+    <div class="form-floating mb-3">
+        <select asp-for="ParentCategoryId" class="form-select" asp-items="@(ViewData["ParentCategoryId"] as SelectList)">
+        </select>
+    </div>
+    <div class="form-floating mb-4">
+        <select asp-for="IsActive" class="form-select">
+            <option value="">-- Status --</option>
+            <option value="false">Inactive</option>
+            <option value="true">Active</option>
+        </select>
+    </div>
+    <div class="d-grid">
+        <button type="submit" class="btn btn-gradient">Create</button>
+    </div>
+</form>

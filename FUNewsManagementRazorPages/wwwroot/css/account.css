@@ -226,11 +226,11 @@
     background: #ff5252;
 }
 
-    .circle-btn.edit:hover,
-    .circle-btn.delete:hover {
-        transform: translateY(-2px) scale(1.07);
-        box-shadow: 0 4px 16px rgba(44, 62, 80, 0.15);
-    }
+.circle-btn.edit:hover,
+.circle-btn.delete:hover {
+    transform: translateY(-2px) scale(1.07);
+    box-shadow: 0 4px 16px rgba(44, 62, 80, 0.15);
+}
 
 .circle-btn i {
     color: #fff;

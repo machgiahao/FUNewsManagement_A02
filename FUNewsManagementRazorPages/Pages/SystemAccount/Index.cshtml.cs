@@ -55,7 +55,7 @@ namespace FUNewsManagementRazorPages.Pages.SystemAccount
             }
             var registerDto = _mapper.Map<RegisterDto>(CreateAccountViewModel);
             await _accountService.CreateSystemAccount(registerDto);
-
+            TempData["SuccessMessage"] = "Created successfully!";
             return RedirectToPage("./Index");
         }
 
@@ -90,7 +90,7 @@ namespace FUNewsManagementRazorPages.Pages.SystemAccount
 
             var accountDto = _mapper.Map<AccountDto>(EditAccountViewModel);
             await _accountService.UpdateSystemAccount(accountDto);
-
+            TempData["SuccessMessage"] = "Updated successfully!";
             return RedirectToPage("./Index");
         }
 
@@ -102,6 +102,7 @@ namespace FUNewsManagementRazorPages.Pages.SystemAccount
         public async Task<IActionResult> OnPostDeleteAsync(int id)
         {
             await _accountService.DeleteSystemAccount(id);
+            TempData["SuccessMessage"] = "Deleted successfully!";
             return RedirectToPage("./Index");
         }
 

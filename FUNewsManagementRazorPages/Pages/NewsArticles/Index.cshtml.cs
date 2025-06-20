@@ -95,6 +95,7 @@ namespace FUNewsManagementRazorPages.Pages.NewsArticles
             newsArticle.CreatedById = (short)userId.Value;
             await _newsArticleService.SaveNewsArticleAsync(newsArticle);
             await _hubContext.Clients.All.SendAsync("LoadAllItems");
+            TempData["SuccessMessage"] = "Created successfully!";
             return RedirectToPage();
         }
 
@@ -205,6 +206,7 @@ namespace FUNewsManagementRazorPages.Pages.NewsArticles
 
             await _newsArticleService.UpdateNewsArticleAsync(article);
             await _hubContext.Clients.All.SendAsync("LoadAllItems");
+            TempData["SuccessMessage"] = "Updated successfully!";
             return RedirectToPage("./Index");
         }
 
@@ -217,6 +219,7 @@ namespace FUNewsManagementRazorPages.Pages.NewsArticles
                 return RedirectToPage("/Auth/AccessDenied");
             await _newsArticleService.DeleteNewsArticleAsync(id);
             await _hubContext.Clients.All.SendAsync("LoadAllItems");
+            TempData["SuccessMessage"] = "Deleted successfully!";
             return RedirectToPage("./Index");
         }
         

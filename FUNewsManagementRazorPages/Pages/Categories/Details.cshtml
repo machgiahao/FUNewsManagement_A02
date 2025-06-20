@@ -1,0 +1,65 @@
+﻿@page
+@model FUNewsManagementRazorPages.Pages.Categories.DetailsModel
+
+@{
+    ViewData["Title"] = "Category Details";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0 rounded-4 details-card">
+                <div class="card-header d-flex align-items-center rounded-top-4" style="background: linear-gradient(90deg, #36d1dc 0%, #5b86e5 100%); min-height: 60px;">
+                    <i class="bi bi-folder2-open me-2 text-white" style="font-size: 1.7rem;"></i>
+                    <span class="fw-bold fs-5 text-white">Category Details</span>
+                </div>
+                <div class="card-body px-5 py-4">
+                    <div class="row mb-4 align-items-center">
+                        <div class="col-5 text-secondary fw-semibold fs-6">Category Name</div>
+                        <div class="col-7 fs-6">@Model.Category.CategoryName</div>
+                    </div>
+                    <div class="row mb-4 align-items-center">
+                        <div class="col-5 text-secondary fw-semibold fs-6">Description</div>
+                        <div class="col-7 fs-6">@Model.Category.CategoryDesciption</div>
+                    </div>
+                    <div class="row mb-4 align-items-center">
+                        <div class="col-5 text-secondary fw-semibold fs-6">Status</div>
+                        <div class="col-7">
+                            @if (Model.Category.IsActive)
+                            {
+                                <span class="badge rounded-pill px-4 py-2" style="background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%); color: #fff; font-size: 1rem;">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge rounded-pill px-4 py-2 bg-secondary" style="font-size: 1rem;">Inactive</span>
+                            }
+                        </div>
+                    </div>
+                    <div class="row mb-2 align-items-center">
+                        <div class="col-5 text-secondary fw-semibold fs-6">Parent Category</div>
+                        <div class="col-7 fs-6">@Model.Category.ParentCategoryName</div>
+                    </div>
+                </div>
+                <div class="card-footer bg-white border-0 rounded-bottom-4 d-flex justify-content-end">
+                    <a href="#" onclick="if(document.referrer){window.history.back();}else{window.location='@Url.Action("Index")';} return false;"
+                       class="btn btn-outline-primary btn-sm px-4 fw-semibold">
+                        <i class="bi bi-arrow-left"></i> Back
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<style>
+    .details-card {
+        transition: box-shadow 0.2s;
+        background: #fafdff;
+    }
+
+        .details-card:hover {
+            box-shadow: 0 8px 32px rgba(54, 209, 220, 0.15);
+        }
+</style>

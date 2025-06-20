@@ -17,9 +17,17 @@
 
 @{
     ViewData["Title"] = "System Accounts";
+    ViewData["CreateFormPartial"] = "SystemAccount/_CreateForm";
+    ViewData["EditFormPartial"] = "SystemAccount/_EditForm";
 }
 <link rel="stylesheet" href="~/css/account.css" />
-
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
 <div class="account-center-container">
     <div class="account-card">
         <div class="account-header">
@@ -27,6 +35,7 @@
             <button type="button" class="account-plus-btn" data-bs-toggle="modal" data-bs-target="#createModal">
                 <i class="bi bi-plus"></i>
             </button>
+            @await Html.PartialAsync("_CreateModal", Model.CreateAccountViewModel)
         </div>
         <form method="get" class="account-search-row">
             <div class="account-search-group">
@@ -73,11 +82,10 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <button type="button" class="circle-btn edit"
-                                            title="Edit"
-                                            onclick="location.href='@Url.Page("./Edit", new { id = item.AccountId })'; event.stopPropagation();">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
+                                    <a asp-page-handler="Edit" asp-route-id="@item.AccountId"
+                                       class="circle-btn edit" title="Edit" onclick="event.stopPropagation();">
+                                        <i class="bi bi-pencil fs-5"></i>
+                                    </a>
                                     <button type="button" class="circle-btn delete"
                                             title="Delete"
                                             data-bs-toggle="modal"
@@ -102,7 +110,6 @@
     </div>
 </div>
 
-@await Html.PartialAsync("_CreateModal", Model.CreateAccountViewModel)
 @await Html.PartialAsync("_EditModal", Model.EditAccountViewModel)
 
 @section Scripts {
@@ -114,4 +121,12 @@
             editModal.show();
         </script>
     }
+    <script>
+        setTimeout(function () {
+            document.querySelectorAll('.alert-dismissible').forEach(function(alert) {
+                var bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+                bsAlert.close();
+            });
+        }, 3000);
+    </script>
 }
