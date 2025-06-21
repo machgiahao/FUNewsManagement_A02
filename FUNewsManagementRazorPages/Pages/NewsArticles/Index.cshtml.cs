@@ -95,7 +95,7 @@ namespace FUNewsManagementRazorPages.Pages.NewsArticles
             newsArticle.CreatedById = (short)userId.Value;
             await _newsArticleService.SaveNewsArticleAsync(newsArticle);
             await _hubContext.Clients.All.SendAsync("LoadAllItems");
-            TempData["SuccessMessage"] = "Created successfully!";
+            TempData["SuccessMessage"] = "Created successfully!"; 
             return RedirectToPage();
         }
 
@@ -222,7 +222,20 @@ namespace FUNewsManagementRazorPages.Pages.NewsArticles
             TempData["SuccessMessage"] = "Deleted successfully!";
             return RedirectToPage("./Index");
         }
-        
+        public async Task<IActionResult> OnGetPartialAsync()
+        {
+            var role = HttpContext.Session.GetInt32("Role");
+            var newsArticles = await _newsArticleService.GetNewsArticlesAsync();
+
+            var result = (role == (int)AccountRole.Staff)
+                ? newsArticles
+                : newsArticles.Where(n => n.NewsStatus == true);
+
+            var mapped = _mapper.Map<List<NewsArticleViewModel>>(result);
+            return Partial("_NewsListPartial", mapped);
+        }
+
+
         private bool IsStaff()
         {
             return HttpContext.Session.GetInt32("Role") == (int)AccountRole.Staff;
