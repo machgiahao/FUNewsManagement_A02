@@ -4,10 +4,16 @@
 @model FUNewsManagementRazorPages.Pages.NewsArticles.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "News Article";
     ViewData["CreateFormPartial"] = "NewsArticles/_CreateForm";
     ViewData["EditFormPartial"] = "NewsArticles/_EditForm";
     var isStaff = (int?)ViewData["Role"] == (int)AccountRole.Staff;
+    var partialViewData = new ViewDataDictionary(ViewData)
+            {
+                ["CurrentPage"] = ViewData["CurrentPage"],
+                ["TotalPages"] = ViewData["TotalPages"],
+                ["Role"] = ViewData["Role"]
+            };
 }
 <link rel="stylesheet" href="~/css/newsArticle.css" />
 @if (TempData["SuccessMessage"] != null)
@@ -35,15 +41,15 @@
         
         @if (Model.NewsArticle != null && Model.NewsArticle.Any())
         {
-            <div id="newsListContainer" class="row g-5 justify-content-center">
-                @await Html.PartialAsync("_NewsListPartial", Model.NewsArticle)
+
+            <div id="newsPartialContainer">
+                @await Html.PartialAsync("_ListNewsArticlePartial", Model.NewsArticle, partialViewData)
             </div>
         }
         else
         {
             <div class="text-center text-muted">No news articles found.</div>
         }
-
     </div>
 </div>
 
@@ -60,8 +66,6 @@
         })
     }
 }
-<script src="~/js/signalR/dist/browser/signalr.js"></script>
-<script src="~/js/site.js"></script>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     @if (ViewData["ShowEditModal"] as bool? == true)
@@ -80,3 +84,5 @@
         }, 3000);
     </script>
 }
+<script src="~/js/signalR/dist/browser/signalr.js"></script>
+<script src="~/js/site.js"></script>

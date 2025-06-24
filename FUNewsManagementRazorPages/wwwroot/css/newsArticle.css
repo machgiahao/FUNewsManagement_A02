@@ -254,3 +254,20 @@
     gap: 0.3em;
 }
 
+.pagination .page-link {
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    font-weight: 500;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+    .pagination .page-link:hover:not(.active):not(.disabled) {
+        background: #e9ecef;
+        color: #007bff;
+    }
+
+    .pagination .active .page-link,
+    .pagination .page-link.bg-primary {
+        background: #007bff !important;
+        color: #fff !important;
+        border-color: #007bff !important;
+    }

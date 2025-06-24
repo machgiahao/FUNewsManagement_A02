@@ -9,6 +9,7 @@ using FUNewsManagementSystem.BusinessObject.Enums;
 using NewsManagementMVC.Attributes;
 using FUNewsManagementRazorPages.SignalR;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace FUNewsManagementRazorPages.Pages.NewsArticles
 {
@@ -29,21 +30,24 @@ namespace FUNewsManagementRazorPages.Pages.NewsArticles
         }
 
         public IList<NewsArticleViewModel> NewsArticle { get;set; } = default!;
-
-        public async Task OnGetAsync()
+        public int CurrentPage { get; set; }
+        public int TotalPages { get; set; }
+        public async Task OnGetAsync(int pageNumber = 1)
         {
+            int pageSize = 6;
             var role = HttpContext.Session.GetInt32("Role");
             ViewData["Role"] = HttpContext.Session.GetInt32("Role");
-            var newsArticles = await _newsArticleService.GetNewsArticlesAsync();
-            if (role == (int)AccountRole.Staff)
-            {
-                NewsArticle = _mapper.Map<List<NewsArticleViewModel>>(newsArticles);
-            }
-            else
-            {
-                var activeNews = newsArticles.Where(n => n.NewsStatus == true); 
-                NewsArticle = _mapper.Map<List<NewsArticleViewModel>>(activeNews);
-            }
+            bool isStaff = role == (int)AccountRole.Staff;
+            var (articles, totalCount) = await _newsArticleService.GetPagedNewsArticlesAsync(pageNumber, pageSize, isStaff);
+
+            IEnumerable<NewsArticle> filtered = articles;
+
+            NewsArticle = _mapper.Map<List<NewsArticleViewModel>>(filtered);
+
+            CurrentPage = pageNumber;
+            TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+            ViewData["CurrentPage"] = CurrentPage;
+            ViewData["TotalPages"] = TotalPages;
             ViewData["CategoryId"] = new SelectList(await _categoryService.GetCategoriesAsync(), "CategoryId", "CategoryName");
             ViewData["TagIds"] = new MultiSelectList(await _tagService.GetTagsAsync(), "TagId", "TagName");
         }
@@ -222,19 +226,28 @@ namespace FUNewsManagementRazorPages.Pages.NewsArticles
             TempData["SuccessMessage"] = "Deleted successfully!";
             return RedirectToPage("./Index");
         }
-        public async Task<IActionResult> OnGetPartialAsync()
+        public async Task<IActionResult> OnGetPartialAsync(int pageNumber = 1)
         {
+            int pageSize = 6;
             var role = HttpContext.Session.GetInt32("Role");
-            var newsArticles = await _newsArticleService.GetNewsArticlesAsync();
+            bool isStaff = role == (int)AccountRole.Staff;
+            var (articles, totalCount) = await _newsArticleService.GetPagedNewsArticlesAsync(pageNumber, pageSize, isStaff);
 
-            var result = (role == (int)AccountRole.Staff)
-                ? newsArticles
-                : newsArticles.Where(n => n.NewsStatus == true);
+            var mapped = _mapper.Map<List<NewsArticleViewModel>>(articles);
 
-            var mapped = _mapper.Map<List<NewsArticleViewModel>>(result);
-            return Partial("_NewsListPartial", mapped);
+            var viewData = new ViewDataDictionary<List<NewsArticleViewModel>>(ViewData, mapped)
+            {
+                ["CurrentPage"] = pageNumber,
+                ["TotalPages"] = (int)Math.Ceiling(totalCount / (double)pageSize),
+                ["Role"] = role
+            };
+
+            return new PartialViewResult
+            {
+                ViewName = "_ListNewsArticlePartial",
+                ViewData = viewData
+            };
         }
-
 
         private bool IsStaff()
         {

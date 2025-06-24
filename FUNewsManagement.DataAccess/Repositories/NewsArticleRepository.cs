@@ -28,6 +28,35 @@ namespace FUNewsManagementSystem.DataAccess
             }
         }
 
+        public async Task<(List<NewsArticle> Articles, int TotalCount)> GetPagedNewsArticlesAsync(int pageNumber, int pageSize, bool isStaff)
+        {
+            try
+            {
+                using var context = new FunewsManagementContext();
+                var query = context.NewsArticles
+                    .Include(na => na.Category)
+                    .Include(na => na.Tags)
+                    .Include(n => n.CreatedBy)
+                    .OrderByDescending(n => n.CreatedDate).AsQueryable();
+
+                if (!isStaff)
+                    query = query.Where(n => n.NewsStatus == true);
+
+                int totalCount = await query.CountAsync();
+                var articles = await query
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync();
+
+                return (articles, totalCount);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in GetPagedNewsArticlesAsync: " + ex.Message);
+            }
+        }
+
+
         public async Task CreateNewsArticleAsync(NewsArticle newsArticle)
         {
             Console.WriteLine($"News article: {newsArticle}");

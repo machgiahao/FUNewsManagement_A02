@@ -15,5 +15,6 @@ namespace FUNewsManagementSystem.Services
         Task<List<NewsArticle>> GetNewsArticlesByPeriodAsync(DateTime startDate, DateTime endDate);
         Task<List<NewsArticle>> SearchNewsArticlesAsync(string searchField, string searchString, int? tagId = null);
         Task<List<NewsArticle>> GetListNewsArticlesByCreatorAsync(int userId);
+        Task<(List<NewsArticle> Articles, int TotalCount)> GetPagedNewsArticlesAsync(int pageNumber, int pageSize, bool isStaff);
     }
 }

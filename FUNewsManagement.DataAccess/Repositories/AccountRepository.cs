@@ -1,10 +1,6 @@
 ﻿using FUNewsManagement.BusinessObjects.Context;
 using FUNewsManagement.BusinessObjects.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FUNewsManagementSystem.DataAccess
 {

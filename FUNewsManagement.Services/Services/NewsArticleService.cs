@@ -4,8 +4,10 @@ using FUNewsManagementSystem.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,6 +27,11 @@ namespace FUNewsManagementSystem.Services
         public async Task<List<NewsArticle>> GetNewsArticlesAsync()
         {
             return await _newsArticleRepository.GetNewsArticlesAsync();
+        }
+        public async Task<(List<NewsArticle> Articles, int TotalCount)> GetPagedNewsArticlesAsync(int pageNumber, int pageSize, bool isStaff)
+        {
+            var (list, total) = await _newsArticleRepository.GetPagedNewsArticlesAsync(pageNumber, pageSize, isStaff);
+                return (list, total);
         }
 
         public async Task SaveNewsArticleAsync(NewsArticle newsArticle)

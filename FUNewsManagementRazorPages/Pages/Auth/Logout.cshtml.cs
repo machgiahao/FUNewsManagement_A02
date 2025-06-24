@@ -8,7 +8,7 @@ namespace FUNewsManagementRazorPages.Pages.Auth
         public IActionResult OnGet()
         {
             HttpContext.Session.Clear();
-            return RedirectToPage("/Index"); // Redirect to home page
+            return RedirectToPage("/NewsArticles/Index"); // Redirect to home page
         }
     }
 }
