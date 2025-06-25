@@ -11,7 +11,14 @@ function loadPage(pageNumber) {
         .catch(err => console.error("Error loading partial:", err));
 }
 
-connection.start().catch(function (err) {
-    return console.error(err.toString());
+connection.on("LoadAllItems", function () {
+    const currentPage = 1; // Or get from your UI state
+    loadPage(currentPage);
 });
+
+connection.start()
+    //.then(() => console.log("SignalR connected"))
+    .catch(function (err) {
+        return console.error(err.toString());
+    });
 

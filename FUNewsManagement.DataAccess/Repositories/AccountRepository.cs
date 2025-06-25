@@ -101,8 +101,16 @@ namespace FUNewsManagementSystem.DataAccess
             try
             {
                 using var context = new FunewsManagementContext();
-                context.Entry<SystemAccount>(systemAccount).State = EntityState.Modified;
-                await context.SaveChangesAsync();
+                var existingAccount = await context.SystemAccounts
+                    .FirstOrDefaultAsync(a => a.AccountId == systemAccount.AccountId);
+                if (existingAccount != null)
+                {
+                    existingAccount.AccountName = systemAccount.AccountName;
+                    existingAccount.AccountEmail = systemAccount.AccountEmail;
+                    existingAccount.AccountRole = systemAccount.AccountRole;
+
+                    await context.SaveChangesAsync();
+                }
             }
             catch (Exception ex)
             {
