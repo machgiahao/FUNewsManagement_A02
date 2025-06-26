@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using FUNewsManagementSystem.Services;
 using AutoMapper;
 using FUNewsManagementRazorPages.ViewModels.SystemAccount;
+using Microsoft.AspNetCore.SignalR;
+using FUNewsManagementRazorPages.SignalR;
 
 namespace FUNewsManagementRazorPages.Pages.SystemAccount
 {
@@ -10,7 +12,7 @@ namespace FUNewsManagementRazorPages.Pages.SystemAccount
     {
         private readonly IAccountService _accountService;
         private readonly IMapper _mapper;
-        public DetailsModel(IAccountService accountService, IMapper mapper)
+        public DetailsModel(IAccountService accountService, IMapper mapper, IHubContext<SignalRServer> hubContext)
         {
             _accountService = accountService;
             _mapper = mapper;

@@ -39,7 +39,6 @@ public partial class FunewsManagementContext : DbContext
         return configuration["ConnectionStrings:FUNewsManagementDB"];
     }
 
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Category>(entity =>

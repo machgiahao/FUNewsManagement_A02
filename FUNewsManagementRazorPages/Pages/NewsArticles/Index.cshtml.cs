@@ -115,7 +115,7 @@ namespace FUNewsManagementRazorPages.Pages.NewsArticles
             if (article == null)
                 return NotFound();
 
-            // Create view model from entity (similar to your MVC FromNewsArticle)
+            // Create view model from entity
             EditNewsArticle = _mapper.Map<EditNewsArticleViewModel>(article);
 
             // Make sure SelectedTagIds is initialized and populated
@@ -125,7 +125,7 @@ namespace FUNewsManagementRazorPages.Pages.NewsArticles
             ViewData["CategoryId"] = new SelectList(
                 await _categoryService.GetCategoriesAsync(),
                 "CategoryId",
-                "CategoryName",  // Use CategoryName, not CategoryId for display
+                "CategoryName",
                 article.CategoryId
             );
 

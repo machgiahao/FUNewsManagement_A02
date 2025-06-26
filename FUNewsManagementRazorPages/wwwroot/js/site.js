@@ -12,7 +12,7 @@ function loadPage(pageNumber) {
 }
 
 connection.on("LoadAllItems", function () {
-    const currentPage = 1; // Or get from your UI state
+    const currentPage = 1; 
     loadPage(currentPage);
 });
 
